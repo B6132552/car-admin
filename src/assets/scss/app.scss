@@ -1,0 +1,147 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap");
+
+* {
+  font-family: "Kanit", sans-serif;
+}
+svg {
+  vertical-align: baseline !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: #e0e0e0 !important;
+  color: #b8b8b8;
+}
+
+body {
+  background-color: #f0f2f5 !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  // box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #757575;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff7a;
+}
+
+li.ant-menu-item.item-menu-ant-custom {
+  font-size: 16px;
+  display: flex;
+  height: 45px;
+  align-items: center;
+  border-radius: 12px;
+
+  &:hover {
+    background-color: #f0f2f53d;
+  }
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-layout {
+  background-color: #f3f4ef;
+  height: 100vh;
+}
+:where(.css-dev-only-do-not-override-1me4733).ant-layout .ant-layout-sider {
+  background-color: #f3f4ef;
+  min-width: 240px !important;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-menu-dark {
+  background-color: transparent;
+}
+
+.logo {
+  margin-top: 30px;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-menu-dark
+  .ant-menu-item-selected {
+  background-color: #053938;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-menu-dark.ant-menu-inline
+  .ant-menu-item {
+  border-radius: 14px;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-menu-inline.ant-menu-root
+  .ant-menu-item
+  > .ant-menu-title-content,
+:where(.css-dev-only-do-not-override-1me4733).ant-menu-inline.ant-menu-root
+  .ant-menu-submenu-title
+  > .ant-menu-title-content {
+  font-size: 18px;
+}
+
+.filter-tap {
+  margin-top: 40px;
+}
+
+:where(.css-dev-only-do-not-override-1me4733)[class^="ant-col"],
+:where(.css-dev-only-do-not-override-1me4733)[class*=" ant-col"] {
+  font-family: "Kanit", sans-serif !important;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-input:placeholder-shown {
+  font-family: "Kanit", sans-serif !important;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-1me4733).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > td {
+  background: #f3f4ef !important;
+  color: #053938 !important;
+  font-family: "Kanit", sans-serif !important;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-btn-default {
+  background-color: #fbe16f;
+  border-color: white;
+  border-radius: 10px;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-btn.ant-btn-icon-only > span {
+  color: white;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-pagination
+  .ant-pagination-item-active {
+  background-color: #053938;
+  border-color: white;
+  border-radius: 10px;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-pagination .ant-pagination-item-active a{
+  color: white;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
+    height: 40px;
+    align-items: center;
+    background-color: #f1f3f0;
+    border-radius: 10px;
+    border: none;
+}
