@@ -15,7 +15,7 @@ const AuthProvider = ({
   useEffect(() => {
     const _redirect = () => {
       if (pathname === "/") {
-        navigate("/usermanagement", { replace: true });
+        navigate("/usermanagement", { replace: true});
       }
     };
     _redirect();

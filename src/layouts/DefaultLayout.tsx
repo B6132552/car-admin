@@ -35,12 +35,12 @@ const DefaultLayout: React.FC<Props> = () => {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: "22px",
-    color: "#114942",
+    color: "#0B63F8",
     marginBottom: "50px",
   };
 
   return (
-    <Layout className="layout" style={{ backgroundColor: "#f1f3ec" }}>
+    <Layout className="layout" style={{ backgroundColor: "#FFFFFF" }}>
       <Sider
         style={hoverLayout}
         trigger={null}
@@ -50,7 +50,7 @@ const DefaultLayout: React.FC<Props> = () => {
         onMouseLeave={toggleHover}
       >
         <div className="logo" />
-        <p style={text}>TEST</p>
+        <p style={text}>CARS.</p>
         <Menu
           theme="dark"
           mode="inline"
@@ -91,8 +91,8 @@ const DefaultLayout: React.FC<Props> = () => {
         <Content
           style={{
             marginTop: "24px",
-            marginBottom: "24px",
-            marginRight: "24px",
+            marginBottom: "12px",
+            marginRight: "12px",
           }}
         >
           <div
@@ -100,9 +100,10 @@ const DefaultLayout: React.FC<Props> = () => {
               borderRadius: 24,
               padding: 24,
               minHeight: "100%",
-              background: colorBgContainer,
+              // background: colorBgContainer,
             }}
           >
+
             <Outlet />
           </div>
         </Content>

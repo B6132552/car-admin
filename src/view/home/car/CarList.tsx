@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Input, Row, Select, Table } from "antd";
 import { DeleteFilled, FormOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Input, Row, Select, Table } from "antd";
+import { useForm } from "antd/es/form/Form";
 import { ColumnsType } from "antd/es/table";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-
 interface DataType {
-  key: string;
+  id: string;
   name: string;
-  age: number;
-  address: string;
-  tags: string[];
+  email: string;
+  gender: string;
+  phone: string;
 }
 
-const Home = () => {
-  const [users, setUsers] = useState([]);
-  const [form] = Form.useForm();
+const CarList = () => {
+  const [form] = useForm();
   const navigate = useNavigate();
-  useEffect(() => {
-    getUser();
-  }, []);
-
+  const dataSource = [
+    {
+      id: "1",
+      name: "Mike",
+      email: "aaaaa@gmail.com",
+      gender: "ชาย",
+      phone: "10 Downing Street",
+    },
+  ];
   const columns: ColumnsType<DataType> = [
     {
       title: "ชื่อ-นามสกุล",
@@ -58,10 +59,10 @@ const Home = () => {
             <Col>
               <Button
                 className="btn-edit-table"
-                icon={<FormOutlined className="text-red" />}
+                icon={<FormOutlined />}
                 size="middle"
                 onClick={() => {
-                  onEdit(_row.id);
+                  //   onEdit(_row.id);
                 }}
               />
             </Col>
@@ -70,7 +71,7 @@ const Home = () => {
               icon={<DeleteFilled />}
               size="middle"
               onClick={() => {
-                onDelete(_row.id);
+                // onDelete(_row.id);
               }}
             ></Button>
           </Row>
@@ -78,58 +79,15 @@ const Home = () => {
       },
     },
   ];
+  const getUser = () => {};
 
-  const getUser = async () => {
-    try {
-      const res = await axios.get(
-        "https://640abca965d3a01f9805f34b.mockapi.io/test01/users"
-      );
-      setUsers(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const onSearch = () => {};
 
-  const onSearch = async (value: any) => {
-    try {
-      const url = new URL(
-        "https://640abca965d3a01f9805f34b.mockapi.io/test01/users"
-      );
-      url.searchParams.append("name", value.name);
-      const res = await axios.get(url.toString());
-      console.log("value ==> ", res);
-      setUsers(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const onDelete = async (id: string) => {
-    axios
-      .delete(`https://640abca965d3a01f9805f34b.mockapi.io/test01/users/${id}`)
-      .then(function (response) {
-        if (response.status == 200) {
-          getUser();
-          Swal.fire("ลบข้อมูลสำเร็จ!", "You clicked the button!", "success");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
-  const onEdit = async (value: string) => {
-    navigate("/usermanagement/edit", {
-      state: {
-        id: value,
-      },
-    });
-  };
   return (
     <div>
-      <Row justify="space-between">
+       <Row justify="space-between">
         <div style={{ fontSize: 20, fontWeight: "bold", color: "#0B63F8" }}>
-          ผู้ใช้งาน
+          รถเช่า
         </div>
         <div>
           <Button
@@ -141,14 +99,14 @@ const Home = () => {
               color: "#FFFFFF",
             }}
             onClick={() => {
-              navigate("/usermanagement/add");
+              navigate("/managecarlist/add");
             }}
           >
             <Row justify="center" align="middle" gutter={15}>
               <Col span={4}>
                 <PlusOutlined />
               </Col>
-              <Col style={{ color: "#FFFFFF" }}>เพิ่มผู้ใช้งาน</Col>
+              <Col style={{ color: "#FFFFFF" }}>เพิ่มรถเช่า</Col>
             </Row>
           </Button>
         </div>
@@ -156,23 +114,19 @@ const Home = () => {
       <div className="filter-tap">
         <Form layout="vertical" form={form} onFinish={onSearch}>
           <Row className="grid grid-cols-12 gap-3">
-            <Form.Item name="name" className="col-span-4">
+            <Form.Item name="name" className="col-span-6">
               <Input
                 className="w-full input-full"
-                placeholder="ค้นหา ชื่อ-นามสกุล"
+                placeholder="ค้นหารถรุ่น"
               />
             </Form.Item>
-
-            <Form.Item name="name" className="col-span-3">
-              <Input className="w-full input-full" placeholder="ค้นหาอีเมล์" />
-            </Form.Item>
-            <Form.Item name="gender" className="col-span-3">
+            <Form.Item name="gender" className="col-span-4">
               <Select
-                placeholder="เลือกเพศ"
+                placeholder="เลือกสถานะ"
                 className="input-full"
                 options={[
-                  { value: "ชาย", label: "ชาย" },
-                  { value: "หญิง", label: "หญิง" },
+                  { value: "พร้อมใช้งาน", label: "พร้อมใช้งาน" },
+                  { value: "ไม่พร้อมใช้งาน", label: "ไม่พร้อมใช้งาน" },
                 ]}
               />
             </Form.Item>
@@ -211,10 +165,9 @@ const Home = () => {
         </Form>
       </div>
       <div style={{ marginTop: 20 }}>
-        <Table columns={columns} rowKey="id" dataSource={users} />
+        <Table columns={columns} rowKey="id" dataSource={dataSource} />
       </div>
     </div>
   );
 };
-
-export default Home;
+export default CarList;

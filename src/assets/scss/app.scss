@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap");
 
 * {
@@ -12,7 +15,7 @@ html {
 }
 
 ::selection {
-  background-color: #e0e0e0 !important;
+  background-color: #fffefe !important;
   color: #b8b8b8;
 }
 
@@ -34,13 +37,13 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #757575;
+  background: #ffffff;
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #ffffff7a;
+  background: #ffffff;
 }
 
 li.ant-menu-item.item-menu-ant-custom {
@@ -56,11 +59,11 @@ li.ant-menu-item.item-menu-ant-custom {
 }
 
 :where(.css-dev-only-do-not-override-1me4733).ant-layout {
-  background-color: #f3f4ef;
+  background-color: #eeededbb;
   height: 100vh;
 }
 :where(.css-dev-only-do-not-override-1me4733).ant-layout .ant-layout-sider {
-  background-color: #f3f4ef;
+  background-color: #ffffff;
   min-width: 240px !important;
 }
 
@@ -68,17 +71,34 @@ li.ant-menu-item.item-menu-ant-custom {
   background-color: transparent;
 }
 
+.input-full {
+  border-radius: 10px;
+  height: 42px;
+  border: 1px solid rgb(221, 220, 220);
+  background-color: "#FFFFFF";
+}
+
+.btn-delete-table{
+ background-color: #ffb6cc !important;
+}
+
+.btn-edit-table{
+  background-color: #c3e2ff !important;
+ }
+
 .logo {
   margin-top: 30px;
 }
 
 :where(.css-dev-only-do-not-override-1me4733).ant-menu-dark
   .ant-menu-item-selected {
-  background-color: #053938;
+  background-color: #0B63F8;
+  color: white  !important;
 }
 
 :where(.css-dev-only-do-not-override-1me4733).ant-menu-dark.ant-menu-inline
   .ant-menu-item {
+    color: black;
   border-radius: 14px;
 }
 
@@ -112,13 +132,14 @@ li.ant-menu-item.item-menu-ant-custom {
   .ant-table-thead
   > tr
   > td {
-  background: #f3f4ef !important;
-  color: #053938 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: bold !important;
   font-family: "Kanit", sans-serif !important;
 }
 
 :where(.css-dev-only-do-not-override-1me4733).ant-btn-default {
-  background-color: #fbe16f;
+  background-color: #030300;
   border-color: white;
   border-radius: 10px;
 }
@@ -129,7 +150,7 @@ li.ant-menu-item.item-menu-ant-custom {
 
 :where(.css-dev-only-do-not-override-1me4733).ant-pagination
   .ant-pagination-item-active {
-  background-color: #053938;
+  background-color: #030300;
   border-color: white;
   border-radius: 10px;
 }
@@ -141,7 +162,7 @@ li.ant-menu-item.item-menu-ant-custom {
 :where(.css-dev-only-do-not-override-1me4733).ant-select-single:not(.ant-select-customize-input) .ant-select-selector{
     height: 40px;
     align-items: center;
-    background-color: #f1f3f0;
+    background-color: #ffffff;
     border-radius: 10px;
     border: none;
 }
