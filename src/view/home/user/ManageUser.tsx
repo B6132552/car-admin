@@ -83,7 +83,7 @@ const ManageUser = () => {
           <div style={{ fontSize: 20, fontWeight: "bold", color: "#0B63F8" }}>
             ผู้ใช้งาน
           </div>
-          <div className="flex gap-2 w-64" >
+          <div className="flex gap-2 w-64">
             <Button
               size="large"
               style={{
@@ -116,7 +116,7 @@ const ManageUser = () => {
             </Button>
           </div>
         </Row>
-        
+
         <div className="filter-tap">
           <Row justify="space-between" gutter={24}>
             <Col
@@ -172,7 +172,7 @@ const ManageUser = () => {
               lg={12}
               md={12}
             >
-              <Form.Item name="gender" label="บทบาท">
+              <Form.Item name="role" label="บทบาท">
                 <Select
                   placeholder="เลือกบทบาท"
                   className="input-full"
