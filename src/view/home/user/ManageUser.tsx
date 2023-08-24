@@ -17,7 +17,7 @@ const ManageUser = () => {
           `https://640abca965d3a01f9805f34b.mockapi.io/test01/users/${initailValue?.id}`
         )
         .then(function (response) {
-          if (response.status == 200) {
+          if (response.status === 200) {
             form.setFieldsValue({
               name: response.data.name,
               gender: response.data.gender,
@@ -41,7 +41,7 @@ const ManageUser = () => {
           }
         )
         .then(function (response) {
-          if (response.status == 200) {
+          if (response.status === 200) {
             Swal.fire(
               "แก้ไขข้อมูลสำเร็จ!",
               "You clicked the button!",
@@ -62,7 +62,7 @@ const ManageUser = () => {
           phone: value.phone,
         })
         .then(function (response) {
-          if (response.status == 201) {
+          if (response.status === 201) {
             Swal.fire(
               "บันทึกข้อมูลสำเร็จ!",
               "You clicked the button!",
