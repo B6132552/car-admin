@@ -2,6 +2,8 @@ import { DeleteFilled, FormOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Select, Table } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { ColumnsType } from "antd/es/table";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 interface DataType {
   id: string;
@@ -14,39 +16,62 @@ interface DataType {
 const CarList = () => {
   const [form] = useForm();
   const navigate = useNavigate();
-  const dataSource = [
-    {
-      id: "1",
-      name: "Mike",
-      email: "aaaaa@gmail.com",
-      gender: "ชาย",
-      phone: "10 Downing Street",
-    },
-  ];
+  const [cars, setCars] = useState([]);
+  useEffect(() => {
+    getCar();
+  }, []);
+
+  const getCar = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:3001/api/car?limit=10&page=1",
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        setCars(res.data.item);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const columns: ColumnsType<DataType> = [
     {
-      title: "ชื่อ-นามสกุล",
+      title: "ชื่อรถ",
       dataIndex: "name",
       key: "name",
       width: "300px",
     },
     {
-      title: "อีเมล์",
-      dataIndex: "email",
-      key: "email",
+      title: "ประเภทรถ",
+      dataIndex: "type",
+      key: "type",
       width: "300px",
     },
     {
-      title: "เพศ",
-      dataIndex: "gender",
-      key: "gender",
+      title: "ราคา/วัน",
+      dataIndex: "price",
+      key: "price",
       width: "220px",
     },
     {
-      title: "เบอร์โทรศัพท์",
-      dataIndex: "phone",
-      key: "phone",
+      title: "สี",
+      dataIndex: "color",
+      key: "color",
       width: "260px",
+    },
+    {
+      title: "สถานะ",
+      dataIndex: "status",
+      key: "status",
+      width: "260px",
+      render: (_: any, _row: any) =>
+        _row.status ? "พร้อมใช้งาน" : "ไม่พร้อมใช้งาน",
     },
     {
       title: "จัดการ",
@@ -62,7 +87,7 @@ const CarList = () => {
                 icon={<FormOutlined />}
                 size="middle"
                 onClick={() => {
-                  //   onEdit(_row.id);
+                    onEdit(_row.id);
                 }}
               />
             </Col>
@@ -80,12 +105,18 @@ const CarList = () => {
     },
   ];
   const getUser = () => {};
-
+  const onEdit = async (value: string) => {
+    navigate("/car/edit", {
+      state: {
+        id: value,
+      },
+    });
+  };
   const onSearch = () => {};
 
   return (
     <div>
-       <Row justify="space-between">
+      <Row justify="space-between">
         <div style={{ fontSize: 20, fontWeight: "bold", color: "#0B63F8" }}>
           รถเช่า
         </div>
@@ -115,10 +146,7 @@ const CarList = () => {
         <Form layout="vertical" form={form} onFinish={onSearch}>
           <Row className="grid grid-cols-12 gap-3">
             <Form.Item name="name" className="col-span-6">
-              <Input
-                className="w-full input-full"
-                placeholder="ค้นหารถรุ่น"
-              />
+              <Input className="w-full input-full" placeholder="ค้นหารถรุ่น" />
             </Form.Item>
             <Form.Item name="gender" className="col-span-4">
               <Select
@@ -165,7 +193,7 @@ const CarList = () => {
         </Form>
       </div>
       <div style={{ marginTop: 20 }}>
-        <Table columns={columns} rowKey="id" dataSource={dataSource} />
+        <Table columns={columns} rowKey="id" dataSource={cars} />
       </div>
     </div>
   );

@@ -28,6 +28,7 @@ const Home = () => {
       dataIndex: "name",
       key: "name",
       width: "300px",
+      render: (_:any,_row:any) => `${_row.firstName} ${_row.lastName}`
     },
     {
       title: "อีเมล์",
@@ -35,17 +36,26 @@ const Home = () => {
       key: "email",
       width: "300px",
     },
-    {
-      title: "เพศ",
-      dataIndex: "gender",
-      key: "gender",
-      width: "220px",
-    },
+    // {
+    //   title: "เพศ",
+    //   dataIndex: "gender",
+    //   key: "gender",
+    //   width: "220px",
+    // },
     {
       title: "เบอร์โทรศัพท์",
-      dataIndex: "phone",
-      key: "phone",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
       width: "260px",
+    },
+    {
+      title: "บทบาท",
+      dataIndex: "roleId",
+      key: "roleId",
+      width: "260px",
+      render: (column: any, _row: any) => {
+        return _row.roleId === 1 ? "ADMIN" : "USER";
+      },
     },
     {
       title: "จัดการ",
@@ -65,14 +75,14 @@ const Home = () => {
                 }}
               />
             </Col>
-            <Button
+            {/* <Button
               className="btn-delete-table"
               icon={<DeleteFilled />}
               size="middle"
               onClick={() => {
                 onDelete(_row.id);
               }}
-            ></Button>
+            ></Button> */}
           </Row>
         );
       },
@@ -82,41 +92,63 @@ const Home = () => {
   const getUser = async () => {
     try {
       const res = await axios.get(
-        "https://640abca965d3a01f9805f34b.mockapi.io/test01/users"
+        "http://localhost:3001/api/user?limit=10&page=1",
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+          },
+        }
       );
-      setUsers(res.data);
+
+      if (res.status === 200) {
+        setUsers(res.data.item);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
   const onSearch = async (value: any) => {
+    console.log('value ==> ',value);
+    
     try {
-      const url = new URL(
-        "https://640abca965d3a01f9805f34b.mockapi.io/test01/users"
+      const res = await axios.get(
+        `http://localhost:3001/api/user?limit=10&page=1&roleId=${value.roleId}&email=${value.email}&name=${value.name}`,
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+          },
+        }
       );
-      url.searchParams.append("name", value.name);
-      const res = await axios.get(url.toString());
-      console.log("value ==> ", res);
-      setUsers(res.data);
+
+      if (res.status === 200) {
+        setUsers(res.data.item);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const onDelete = async (id: string) => {
-    axios
-      .delete(`https://640abca965d3a01f9805f34b.mockapi.io/test01/users/${id}`)
-      .then(function (response) {
-        if (response.status == 200) {
-          getUser();
-          Swal.fire("ลบข้อมูลสำเร็จ!", "You clicked the button!", "success");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+  // const onDelete = async (id: string) => {
+  //   axios
+  //     .delete(`http://localhost:3001/api/user/${id}`,{
+  //       headers: {
+  //         Authorization:
+  //           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+  //       },
+  //     })
+  //     .then(function (response) {
+  //       if (response.status === 200) {
+  //         getUser();
+  //         Swal.fire("ลบข้อมูลสำเร็จ!", "You clicked the button!", "success");
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // };
 
   const onEdit = async (value: string) => {
     navigate("/usermanagement/edit", {
@@ -163,16 +195,16 @@ const Home = () => {
               />
             </Form.Item>
 
-            <Form.Item name="name" className="col-span-3">
+            <Form.Item name="email" className="col-span-3">
               <Input className="w-full input-full" placeholder="ค้นหาอีเมล์" />
             </Form.Item>
-            <Form.Item name="gender" className="col-span-3">
+            <Form.Item name="roleId" className="col-span-3">
               <Select
-                placeholder="เลือกเพศ"
+                placeholder="เลือกบาท"
                 className="input-full"
                 options={[
-                  { value: "ชาย", label: "ชาย" },
-                  { value: "หญิง", label: "หญิง" },
+                  { value: 1, label: "ADMIN" },
+                  { value: 2, label: "USER" },
                 ]}
               />
             </Form.Item>

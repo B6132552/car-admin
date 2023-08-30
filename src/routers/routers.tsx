@@ -65,7 +65,12 @@ export const routers: RouteObject[] = [
         index: true,
       },
       {
-        path: "/managecarlist/add",
+        path: "/car/add",
+        element: <CarAddEdit />,
+        index: true,
+      },
+      {
+        path: "/car/edit",
         element: <CarAddEdit />,
         index: true,
       },

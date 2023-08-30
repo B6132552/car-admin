@@ -13,16 +13,21 @@ const ManageUser = () => {
   useEffect(() => {
     if (initailValue?.id) {
       axios
-        .get(
-          `https://640abca965d3a01f9805f34b.mockapi.io/test01/users/${initailValue?.id}`
-        )
+        .get(`http://localhost:3001/api/user/${initailValue?.id}`, {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+          },
+        })
         .then(function (response) {
           if (response.status === 200) {
             form.setFieldsValue({
-              name: response.data.name,
-              gender: response.data.gender,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
               email: response.data.email,
-              phone: response.data.phone,
+              password: response.data.password,
+              phoneNumber: response.data.phoneNumber,
+              roleId: response.data.roleId,
             });
           }
         });
@@ -31,13 +36,21 @@ const ManageUser = () => {
   const onSave = async (value: any) => {
     if (initailValue?.id) {
       await axios
-        .put(
-          `https://640abca965d3a01f9805f34b.mockapi.io/test01/users/${initailValue?.id}`,
+        .patch(
+          `http://localhost:3001/api/user/${initailValue?.id}`,
           {
-            name: value.name,
+            firstName: value.firstName,
+            lastName: value.lastName,
             email: value.email,
-            gender: value.gender,
-            phone: value.phone,
+            password: value.password,
+            phoneNumber: value.phoneNumber,
+            roleId: value.roleId,
+          },
+          {
+            headers: {
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+            },
           }
         )
         .then(function (response) {
@@ -55,11 +68,13 @@ const ManageUser = () => {
         });
     } else {
       await axios
-        .post("https://640abca965d3a01f9805f34b.mockapi.io/test01/users", {
-          name: value.name,
+        .post("http://localhost:3001/api/user", {
+          firstName: value.firstName,
+          lastName: value.lastName,
           email: value.email,
-          gender: value.gender,
-          phone: value.phone,
+          password: value.password,
+          phoneNumber: value.phoneNumber,
+          roleId: value.roleId,
         })
         .then(function (response) {
           if (response.status === 201) {
@@ -125,7 +140,17 @@ const ManageUser = () => {
               lg={12}
               md={12}
             >
-              <Form.Item name="name" label="ชื่อ-นามสกุล">
+              <Form.Item name="firstName" label="ชื่อ">
+                <Input className="input-full" placeholder="ชื่อ" />
+              </Form.Item>
+            </Col>
+            <Col
+              style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
+              xl={12}
+              lg={12}
+              md={12}
+            >
+              <Form.Item name="lastName" label="นามสกุล">
                 <Input className="input-full" placeholder="ชื่อ-นามสกุล" />
               </Form.Item>
             </Col>
@@ -135,7 +160,17 @@ const ManageUser = () => {
               lg={12}
               md={12}
             >
-              <Form.Item name="phone" label="เบอร์โทรศัพท์">
+              <Form.Item name="password" label="รหัสผ่าน">
+                <Input className="input-full" placeholder="รหัสผ่าน" />
+              </Form.Item>
+            </Col>
+            <Col
+              style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
+              xl={12}
+              lg={12}
+              md={12}
+            >
+              <Form.Item name="phoneNumber" label="เบอร์โทรศัพท์">
                 <Input className="input-full" placeholder="เบอร์โทรศัพท์" />
               </Form.Item>
             </Col>
@@ -149,7 +184,7 @@ const ManageUser = () => {
                 <Input className="input-full" placeholder="อีเมล์" />
               </Form.Item>
             </Col>
-            <Col
+            {/* <Col
               style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
               xl={12}
               lg={12}
@@ -165,20 +200,20 @@ const ManageUser = () => {
                   ]}
                 />
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col
               style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
               xl={12}
               lg={12}
               md={12}
             >
-              <Form.Item name="role" label="บทบาท">
+              <Form.Item name="roleId" label="บทบาท">
                 <Select
                   placeholder="เลือกบทบาท"
                   className="input-full"
                   options={[
-                    { value: "ADMIN", label: "ADMIN" },
-                    { value: "USER", label: "USER" },
+                    { value: 1, label: "ADMIN" },
+                    { value: 2, label: "USER" },
                   ]}
                 />
               </Form.Item>
