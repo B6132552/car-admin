@@ -130,7 +130,7 @@ const CarList = () => {
               color: "#FFFFFF",
             }}
             onClick={() => {
-              navigate("/managecarlist/add");
+              navigate("/car/add");
             }}
           >
             <Row justify="center" align="middle" gutter={15}>

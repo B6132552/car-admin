@@ -163,6 +163,7 @@ const CarAddEdit = () => {
               size="large"
               style={{
                 width: "100%",
+                
                 backgroundColor: "#0B63F8",
                 border: "none",
                 color: "white",
