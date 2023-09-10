@@ -7,6 +7,7 @@ import ManageCar from "../view/home/manage-car/ManageCar";
 import ManageCarList from "../view/home/manage-car/ManagaCarList";
 import CarList from "../view/home/car/CarList";
 import CarAddEdit from "../view/home/car/CarAddEdit";
+import Login from "../view/home/login/login";
 
 
 export interface IRouter {
@@ -49,7 +50,7 @@ export const routers: RouteObject[] = [
         index: true,
       },
       {
-        path: "/managecar/add",
+        path: "/managecar/edit",
         element: <ManageCar />,
         index: true,
       },
@@ -76,4 +77,8 @@ export const routers: RouteObject[] = [
       },
     ],
   },
+  {
+    path: "/login",
+    element: <Login/>
+  }
 ];

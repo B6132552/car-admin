@@ -64,7 +64,7 @@ const ManageCarList = () => {
                 icon={<FormOutlined />}
                 size="middle"
                 onClick={() => {
-                  //   onEdit(_row.id);
+                    onEdit(_row.id);
                 }}
               />
             </Col>
@@ -81,6 +81,14 @@ const ManageCarList = () => {
       },
     },
   ];
+
+  const onEdit = async (value: string) => {
+    navigate("/managecar/edit", {
+      state: {
+        id: value,
+      },
+    });
+  };
   const onSearch = () => {};
   const getUser = () => {};
 

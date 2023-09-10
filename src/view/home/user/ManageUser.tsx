@@ -9,14 +9,16 @@ const ManageUser = () => {
   const [form] = Form.useForm();
   const location = useLocation();
   const initailValue: any = location?.state;
+  const token = localStorage.getItem('accessToken') as string;
 
   useEffect(() => {
     if (initailValue?.id) {
+      console.log(222);
       axios
         .get(`http://localhost:3001/api/user/${initailValue?.id}`, {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+              `Bearer ${token}`,
           },
         })
         .then(function (response) {
@@ -32,7 +34,7 @@ const ManageUser = () => {
           }
         });
     }
-  }, [form, initailValue?.id]);
+  }, [form, initailValue?.id,token]);
   const onSave = async (value: any) => {
     if (initailValue?.id) {
       await axios
@@ -49,7 +51,7 @@ const ManageUser = () => {
           {
             headers: {
               Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+                `Bearer ${token}`,
             },
           }
         )

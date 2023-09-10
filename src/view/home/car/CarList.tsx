@@ -17,9 +17,10 @@ const CarList = () => {
   const [form] = useForm();
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
+  const token = localStorage.getItem('accessToken') as string;
   useEffect(() => {
     getCar();
-  }, []);
+  }, [token]);
 
   const getCar = async () => {
     try {
@@ -28,7 +29,7 @@ const CarList = () => {
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+              `Bearer ${token}`,
           },
         }
       );

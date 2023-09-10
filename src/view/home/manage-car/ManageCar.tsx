@@ -1,8 +1,10 @@
 import { Button, Col, Form, Input, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
+import { useNavigate } from "react-router-dom";
 
 const ManageCar = () => {
     const [form] = useForm()
+    const navigate = useNavigate();
     const onSave = () => {
 
     }
@@ -30,7 +32,7 @@ const ManageCar = () => {
                       borderRadius: 10,
                     }}
                     onClick={() => {
-                    //   navigate(-1);
+                      navigate(-1);
                     }}
                   >
                     กลับ

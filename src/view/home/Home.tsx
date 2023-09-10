@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Input, Row, Select, Table } from "antd";
-import { DeleteFilled, FormOutlined, PlusOutlined } from "@ant-design/icons";
+import { FormOutlined, PlusOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 
 interface DataType {
   key: string;
@@ -18,9 +18,12 @@ const Home = () => {
   const [users, setUsers] = useState([]);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const token = localStorage.getItem('accessToken') as string;
   useEffect(() => {
-    getUser();
-  }, []);
+    if (token) {
+      getUser();
+    }
+  }, [token]);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -96,7 +99,7 @@ const Home = () => {
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+              `Bearer ${token}`,
           },
         }
       );
@@ -110,15 +113,13 @@ const Home = () => {
   };
 
   const onSearch = async (value: any) => {
-    console.log('value ==> ',value);
-    
     try {
       const res = await axios.get(
         `http://localhost:3001/api/user?limit=10&page=1&roleId=${value.roleId}&email=${value.email}&name=${value.name}`,
         {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+              `Bearer ${token}`,
           },
         }
       );

@@ -14,7 +14,7 @@ const CarAddEdit = () => {
   const location = useLocation();
   const initailValue: any = location?.state;
   const [previewImage, setPreviewImage] = useState("");
-
+  const token = localStorage.getItem("accessToken") as string;
   const [fileList, setFileList] = useState<any[]>([]);
 
   const getBase64 = (file: RcFile): Promise<string> =>
@@ -33,14 +33,14 @@ const CarAddEdit = () => {
   };
 
   const handleChange: UploadProps["onChange"] = (fileList: any) => {
-    if (fileList.fileList[0].status === "uploading") {
-      fileList.fileList[0].status = "done";
+    if (fileList.file.status === "uploading") {
+      fileList.file.status = "done";
     }
-    if (fileList.fileList[0].status === "done") {
+    if (fileList.file.status === "done") {
       setFileList(fileList.fileList);
     }
 
-    // setFileList(newFileList);
+    // setFileList(fileList.fileList);
   };
 
   const uploadButton = (
@@ -51,12 +51,13 @@ const CarAddEdit = () => {
   );
 
   useEffect(() => {
+    console.log('initailValue ==> ',initailValue);
+    
     if (initailValue?.id) {
       axios
         .get(`http://localhost:3001/api/car/${initailValue?.id}`, {
           headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+            Authorization: `Bearer ${token}`,
           },
         })
         .then(function (response) {
@@ -69,12 +70,12 @@ const CarAddEdit = () => {
               vehicleRegistration: response.data.vehicleRegistration,
               price: response.data.price,
               status: response.data.status,
-              detail: response.data.detail
+              detail: response.data.detail,
             });
           }
         });
     }
-  }, [form, initailValue?.id]);
+  }, [form, initailValue, initailValue?.id, token]);
   const onSave = async (value: any) => {
     const formData = new FormData();
     formData.append("name", value.name);
@@ -90,8 +91,7 @@ const CarAddEdit = () => {
       await axios
         .patch(`http://localhost:3001/api/user/${initailValue?.id}`, formData, {
           headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         })
@@ -112,8 +112,7 @@ const CarAddEdit = () => {
       await axios
         .post("http://localhost:3001/api/car", formData, {
           headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFzb3NpZDE1QGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTY5MzMwNzQ5MiwiZXhwIjoxNjkzOTEyMjkyfQ.62P1vonapNEnBRckVPEPZdBBPuTJ3hz4LIw1nOWJjoQ",
+            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         })
@@ -163,7 +162,7 @@ const CarAddEdit = () => {
               size="large"
               style={{
                 width: "100%",
-                
+
                 backgroundColor: "#0B63F8",
                 border: "none",
                 color: "white",
@@ -185,7 +184,7 @@ const CarAddEdit = () => {
                 display: "flex",
                 justifyContent: "center",
                 textAlign: "center",
-                marginBottom: '8px'
+                marginBottom: "8px",
               }}
             >
               <Upload
@@ -194,16 +193,25 @@ const CarAddEdit = () => {
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
-                maxCount={1}
               >
-                {fileList.length >= 1 ? null : uploadButton}
+                 {fileList.length >= 8 ? null : uploadButton}
               </Upload>
             </Col>
             <Col
               style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
-              xl={12}
-              lg={12}
-              md={12}
+              xl={6}
+              lg={6}
+              md={6}
+            >
+              <Form.Item name="name" label="ยี่ห้อรถ">
+                <Input className="input-full" placeholder="กรอกยี่ห้อรถ" />
+              </Form.Item>
+            </Col>
+            <Col
+              style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
+              xl={6}
+              lg={6}
+              md={6}
             >
               <Form.Item name="name" label="ชื่อรุ่นรถ">
                 <Input className="input-full" placeholder="กรอกชื่อรุ่นรถ" />
@@ -211,36 +219,9 @@ const CarAddEdit = () => {
             </Col>
             <Col
               style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
-              xl={12}
-              lg={12}
-              md={12}
-            >
-              <Form.Item name="type" label="ประเภทรถ">
-                <Select
-                  placeholder="เลือกประเภทรถ"
-                  className="input-full"
-                  options={[
-                    { value: "ไฟฟ้า", label: "ไฟฟ้า" },
-                    { value: "น้ำมัน", label: "น้ำมัน" },
-                  ]}
-                />
-              </Form.Item>
-            </Col>
-            <Col
-              style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
-              xl={12}
-              lg={12}
-              md={12}
-            >
-              <Form.Item name="color" label="สี">
-                <Input className="input-full" placeholder="กรอกสี" />
-              </Form.Item>
-            </Col>
-            <Col
-              style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
-              xl={12}
-              lg={12}
-              md={12}
+              xl={6}
+              lg={6}
+              md={6}
             >
               <Form.Item name="year" label="ปี">
                 <Input className="input-full" placeholder="กรอกปี" />
@@ -248,14 +229,85 @@ const CarAddEdit = () => {
             </Col>
             <Col
               style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
-              xl={12}
-              lg={12}
-              md={12}
+              xl={6}
+              lg={6}
+              md={6}
             >
-              <Form.Item name="vehicleRegistration" label="ทะเบียนรถ">
-                <Input className="input-full" placeholder="กรอกทะเบียนรถ" />
+              <Form.Item name="color" label="สี">
+                <Input className="input-full" placeholder="กรอกสี" />
               </Form.Item>
             </Col>
+            <Col
+              style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
+              xl={6}
+              lg={6}
+              md={6}
+            >
+              <Form.Item name="type" label="ประเภทรถ">
+                <Select
+                  placeholder="เลือกประเภทรถ"
+                  className="input-full"
+                  options={[
+                    { value: "car_2_door", label: "รถเก๋ง 2 ประตู" },
+                    { value: "car_4_door", label: "รถเก๋ง 4 ประตู" },
+                    { value: "car_5_door", label: "รถเก๋ง 5 ประตู" },
+                    { value: "van", label: "รถตู้" },
+                    { value: "sports", label: "รถสปอร์ต" },
+                    { value: "crossover", label: "crossover" },
+                    { value: "suv", label: "รถเอสยูวี" },
+                    { value: "truck", label: "รถบรรทุก" },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
+              xl={6}
+              lg={6}
+              md={6}
+            >
+              <Form.Item name="type" label="ระบบเชื้อเพลิง">
+                <Select
+                  placeholder="เลือกระบบเชื้อเพลิง"
+                  className="input-full"
+                  options={[
+                    { value: "oil", label: "น้ำมัน" },
+                    { value: "electricity", label: "ไฟฟ้า" },
+                    { value: "gas", label: "ก๊าซ" },
+                    { value: "hybrid", label: "ไฮบริด" },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
+              xl={6}
+              lg={6}
+              md={6}
+            >
+              <Form.Item name="price" label="จำนวนที่นั่ง">
+                <Input className="input-full" placeholder="จำนวน" />
+              </Form.Item>
+            </Col>
+
+            <Col
+              style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
+              xl={6}
+              lg={6}
+              md={6}
+            >
+              <Form.Item name="type" label="ประเภทเบาะ">
+                <Select
+                  placeholder="เลือกประเภทเบาะ"
+                  className="input-full"
+                  options={[
+                    { value: "leather_seats", label: "เบาะหนัง" },
+                    { value: "cloth_cushin", label: "เบาะผ้า" },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+           
             <Col
               style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
               xl={12}

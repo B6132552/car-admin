@@ -11,11 +11,13 @@ const AuthProvider = ({
 }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
+  const token = localStorage.getItem("accessToken");
   useEffect(() => {
     const _redirect = () => {
-      if (pathname === "/") {
-        navigate("/usermanagement", { replace: true});
+      if (!token) {
+        navigate("/login");
+      } else if (pathname === "/") {
+        navigate("/usermanagement", { replace: true });
       }
     };
     _redirect();
