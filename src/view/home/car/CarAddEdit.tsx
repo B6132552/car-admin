@@ -51,8 +51,8 @@ const CarAddEdit = () => {
   );
 
   useEffect(() => {
-    console.log('initailValue ==> ',initailValue);
-    
+    console.log("initailValue ==> ", initailValue);
+
     if (initailValue?.id) {
       axios
         .get(`http://localhost:3001/api/car/${initailValue?.id}`, {
@@ -71,22 +71,29 @@ const CarAddEdit = () => {
               price: response.data.price,
               status: response.data.status,
               detail: response.data.detail,
+              ...response.data,
             });
           }
         });
     }
   }, [form, initailValue, initailValue?.id, token]);
   const onSave = async (value: any) => {
-    const formData = new FormData();
+    const formData = new FormData();    
     formData.append("name", value.name);
     formData.append("type", value.type);
     formData.append("color", value.color);
+    formData.append("model", value.model);
+    formData.append("seat", value.seat);
+    formData.append("seatType", value.seatType);
+    formData.append("fuelType", value.fuelType);
     formData.append("year", value.year);
     formData.append("status", value.status);
     formData.append("vehicleRegistration", value.vehicleRegistration);
     formData.append("price", value.price);
     formData.append("detail", value.detail);
-    formData.append("image", fileList[0].originFileObj);
+      fileList.map((item:any) => {
+       return formData.append("image", item.originFileObj);
+      })
     if (initailValue?.id) {
       await axios
         .patch(`http://localhost:3001/api/user/${initailValue?.id}`, formData, {
@@ -194,7 +201,7 @@ const CarAddEdit = () => {
                 onPreview={handlePreview}
                 onChange={handleChange}
               >
-                 {fileList.length >= 8 ? null : uploadButton}
+                {fileList.length >= 8 ? null : uploadButton}
               </Upload>
             </Col>
             <Col
@@ -213,7 +220,7 @@ const CarAddEdit = () => {
               lg={6}
               md={6}
             >
-              <Form.Item name="name" label="ชื่อรุ่นรถ">
+              <Form.Item name="model" label="ชื่อรุ่นรถ">
                 <Input className="input-full" placeholder="กรอกชื่อรุ่นรถ" />
               </Form.Item>
             </Col>
@@ -266,7 +273,7 @@ const CarAddEdit = () => {
               lg={6}
               md={6}
             >
-              <Form.Item name="type" label="ระบบเชื้อเพลิง">
+              <Form.Item name="fuelType" label="ระบบเชื้อเพลิง">
                 <Select
                   placeholder="เลือกระบบเชื้อเพลิง"
                   className="input-full"
@@ -285,7 +292,7 @@ const CarAddEdit = () => {
               lg={6}
               md={6}
             >
-              <Form.Item name="price" label="จำนวนที่นั่ง">
+              <Form.Item name="seat" label="จำนวนที่นั่ง">
                 <Input className="input-full" placeholder="จำนวน" />
               </Form.Item>
             </Col>
@@ -296,7 +303,7 @@ const CarAddEdit = () => {
               lg={6}
               md={6}
             >
-              <Form.Item name="type" label="ประเภทเบาะ">
+              <Form.Item name="seatType" label="ประเภทเบาะ">
                 <Select
                   placeholder="เลือกประเภทเบาะ"
                   className="input-full"
@@ -307,7 +314,7 @@ const CarAddEdit = () => {
                 />
               </Form.Item>
             </Col>
-           
+
             <Col
               style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
               xl={12}

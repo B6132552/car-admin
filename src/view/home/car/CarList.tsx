@@ -70,14 +70,14 @@ const CarList = () => {
       title: "สถานะ",
       dataIndex: "status",
       key: "status",
-      width: "260px",
+      width: "200px",
       render: (_: any, _row: any) =>
         _row.status ? "พร้อมใช้งาน" : "ไม่พร้อมใช้งาน",
     },
     {
       title: "จัดการ",
       key: "action",
-      width: "100px",
+      width: "140px",
       className: "justify-end",
       render: (column: any, _row: any) => {
         return (
