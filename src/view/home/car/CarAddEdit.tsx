@@ -39,6 +39,9 @@ const CarAddEdit = () => {
     if (fileList.file.status === "done") {
       setFileList(fileList.fileList);
     }
+    if (fileList.file.status === "removed") {
+      setFileList(fileList.fileList);
+    }
 
     // setFileList(fileList.fileList);
   };
@@ -71,7 +74,7 @@ const CarAddEdit = () => {
               price: response.data.price,
               status: response.data.status,
               detail: response.data.detail,
-              ...response.data,
+              ...response.data
             });
           }
         });
@@ -109,7 +112,7 @@ const CarAddEdit = () => {
               "You clicked the button!",
               "success"
             );
-            navigate("/usermanagement");
+            navigate("/car");
           }
         })
         .catch(function (error) {
@@ -130,7 +133,7 @@ const CarAddEdit = () => {
               "You clicked the button!",
               "success"
             );
-            navigate("/usermanagement");
+            navigate("/car");
           }
         })
         .catch(function (error) {
@@ -200,6 +203,7 @@ const CarAddEdit = () => {
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
+                // onRemove={hanldeRemove}
               >
                 {fileList.length >= 8 ? null : uploadButton}
               </Upload>
@@ -255,15 +259,25 @@ const CarAddEdit = () => {
                   placeholder="เลือกประเภทรถ"
                   className="input-full"
                   options={[
-                    { value: "car_2_door", label: "รถเก๋ง 2 ประตู" },
-                    { value: "car_4_door", label: "รถเก๋ง 4 ประตู" },
-                    { value: "car_5_door", label: "รถเก๋ง 5 ประตู" },
-                    { value: "van", label: "รถตู้" },
-                    { value: "sports", label: "รถสปอร์ต" },
+                    { value: "รถเก๋ง 2 ประตู", label: "รถเก๋ง 2 ประตู" },
+                    { value: "รถเก๋ง 4 ประ", label: "รถเก๋ง 4 ประตู" },
+                    { value: "รถเก๋ง 5 ประตู", label: "รถเก๋ง 5 ประตู" },
+                    { value: "รถตู้", label: "รถตู้" },
+                    { value: "รถสปอร์ต", label: "รถสปอร์ต" },
                     { value: "crossover", label: "crossover" },
-                    { value: "suv", label: "รถเอสยูวี" },
-                    { value: "truck", label: "รถบรรทุก" },
+                    { value: "รถเอสยูวี", label: "รถเอสยูวี" },
+                    { value: "รถบรรทุก", label: "รถบรรทุก" },
                   ]}
+                  // options={[
+                  //   { value: "car_2_door", label: "รถเก๋ง 2 ประตู" },
+                  //   { value: "car_4_door", label: "รถเก๋ง 4 ประตู" },
+                  //   { value: "car_5_door", label: "รถเก๋ง 5 ประตู" },
+                  //   { value: "van", label: "รถตู้" },
+                  //   { value: "sports", label: "รถสปอร์ต" },
+                  //   { value: "crossover", label: "crossover" },
+                  //   { value: "suv", label: "รถเอสยูวี" },
+                  //   { value: "truck", label: "รถบรรทุก" },
+                  // ]}
                 />
               </Form.Item>
             </Col>
@@ -278,10 +292,10 @@ const CarAddEdit = () => {
                   placeholder="เลือกระบบเชื้อเพลิง"
                   className="input-full"
                   options={[
-                    { value: "oil", label: "น้ำมัน" },
-                    { value: "electricity", label: "ไฟฟ้า" },
-                    { value: "gas", label: "ก๊าซ" },
-                    { value: "hybrid", label: "ไฮบริด" },
+                    { value: "น้ำมัน", label: "น้ำมัน" },
+                    { value: "ไฟฟ้า", label: "ไฟฟ้า" },
+                    { value: "ก๊าซ", label: "ก๊าซ" },
+                    { value: "ไฮบริด", label: "ไฮบริด" },
                   ]}
                 />
               </Form.Item>

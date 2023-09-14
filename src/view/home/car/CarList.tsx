@@ -17,7 +17,7 @@ const CarList = () => {
   const [form] = useForm();
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
-  const token = localStorage.getItem('accessToken') as string;
+  const token = localStorage.getItem("accessToken") as string;
   useEffect(() => {
     getCar();
   }, [token]);
@@ -28,8 +28,7 @@ const CarList = () => {
         "http://localhost:3001/api/car?limit=10&page=1",
         {
           headers: {
-            Authorization:
-              `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -47,17 +46,23 @@ const CarList = () => {
       dataIndex: "name",
       key: "name",
       width: "300px",
+      render: (_: any, _row: any) => {
+        return `${_row.name} ${_row.model ?? ''}`;
+      },
     },
     {
-      title: "ประเภทรถ",
+      title: "ประเภทรถและเชื้อเพลิง",
       dataIndex: "type",
       key: "type",
       width: "300px",
+      render: (_: any, _row: any) => {
+        return `${_row.type} ${_row.fuelType}`;
+      },
     },
     {
-      title: "ราคา/วัน",
-      dataIndex: "price",
-      key: "price",
+      title: "ปี",
+      dataIndex: "year",
+      key: "year",
       width: "220px",
     },
     {
@@ -88,7 +93,7 @@ const CarList = () => {
                 icon={<FormOutlined />}
                 size="middle"
                 onClick={() => {
-                    onEdit(_row.id);
+                  onEdit(_row.id);
                 }}
               />
             </Col>
