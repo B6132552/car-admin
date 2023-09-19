@@ -54,8 +54,6 @@ const CarAddEdit = () => {
   );
 
   useEffect(() => {
-    console.log("initailValue ==> ", initailValue);
-
     if (initailValue?.id) {
       axios
         .get(`http://localhost:3001/api/car/${initailValue?.id}`, {

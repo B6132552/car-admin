@@ -1,9 +1,12 @@
-import { DeleteFilled, FormOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, Row, Select, Table } from "antd";
+import { DeleteFilled, FormOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Input, Row, Table } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
-import Edit from "../../../assets/icon/edit.svg"
+import Edit from "../../../assets/icon/edit.svg";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import dayjs from "dayjs";
 
 interface DataType {
   id: string;
@@ -16,39 +19,85 @@ interface DataType {
 const ManageCarList = () => {
   const [form] = useForm();
   const navigate = useNavigate();
-  const dataSource = [
-    {
-      id: "1",
-      name: "ปวเรศ  ทองมั่นคง",
-      type_car: "BMW Model 2023",
-      date: "18/02/2023 - 20/02/2023",
-      status: "รอดำเนินการ",
-    },
-  ];
+  const token = localStorage.getItem("accessToken") as string;
+  const [manageCars, setManageCars] = useState([]);
+  useEffect(() => {
+    getManageCar();
+  }, [token]);
+
+  const getManageCar = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:3001/api/book?limit=10&page=1",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        setManageCars(res.data.item);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const dataSource = [
+  //   {
+  //     id: "1",
+  //     name: "ปวเรศ  ทองมั่นคง",
+  //     type_car: "BMW Model 2023",
+  //     date: "18/02/2023 - 20/02/2023",
+  //     status: "รอดำเนินการ",
+  //   },
+  // ];
   const columns: ColumnsType<DataType> = [
     {
       title: "ชื่อ-นามสกุล",
       dataIndex: "name",
       key: "name",
       width: "300px",
+      render: (_row,item:any) => {        
+        return `${item.firstName} ${item.lastName}`;
+      },
     },
     {
       title: "รุ่นรถ",
       dataIndex: "type_car",
       key: "type_car",
       width: "300px",
+      render: (_row,item:any) => {
+        console.log('row ==> ',item);
+        
+        return `${item.car.name} ${item.car.model ?? '-'} ${item.car.year
+          ?? '-'}`
+      }
     },
     {
       title: "ระยะเวลาเช่า",
       dataIndex: "date",
       key: "date",
       width: "220px",
+      render: (_row,item:any) => {
+        return `${dayjs(item.startDate).format('YYYY/MM/DD')} - ${dayjs(item.endDate).format('YYYY/MM/DD')}`
+      }
     },
+    // {
+    //   title: "ยอดรวม",
+    //   dataIndex: "price",
+    //   key: "price",
+    //   width: "260px",
+    // },
     {
       title: "สถานะ",
       dataIndex: "status",
       key: "status",
       width: "260px",
+      render: (_row,item: any) => {
+        return `${item.status === 'PENDING' ? 'รอดำเนินการ' : '-'}`
+      }
     },
     {
       title: "จัดการ",
@@ -64,7 +113,7 @@ const ManageCarList = () => {
                 icon={<FormOutlined />}
                 size="middle"
                 onClick={() => {
-                    onEdit(_row.id);
+                  onEdit(_row.id);
                 }}
               />
             </Col>
@@ -148,9 +197,10 @@ const ManageCarList = () => {
         </Form>
       </div>
       <div style={{ marginTop: 20 }}>
-        <Table columns={columns} rowKey="id" dataSource={dataSource} />
+        <Table columns={columns} rowKey="id" dataSource={manageCars} />
       </div>
     </div>
   );
 };
 export default ManageCarList;
+

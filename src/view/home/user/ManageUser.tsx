@@ -163,7 +163,7 @@ const ManageUser = () => {
               md={12}
             >
               <Form.Item name="password" label="รหัสผ่าน">
-                <Input className="input-full" placeholder="รหัสผ่าน" />
+                <Input.Password className="input-full"  placeholder="รหัสผ่าน" />
               </Form.Item>
             </Col>
             <Col
