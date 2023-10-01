@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Image } from "antd";
 import dayjs from "dayjs";
+import TextArea from "antd/es/input/TextArea";
 
 const ManageCar = () => {
   const [form] = useForm();
@@ -176,6 +177,16 @@ const ManageCar = () => {
                     { value: 'SUCCESS', label: "คืนรถสำเร็จ" },
                   ]}
                 />
+              </Form.Item>
+            </Col>
+            <Col
+              style={{ fontSize: 20, fontWeight: "bold", color: "#053938" }}
+              xl={24}
+              lg={24}
+              md={24}
+            >
+              <Form.Item name="detail" label="รายละเอียด">
+                <TextArea rows={4} placeholder="รายละเอียด" maxLength={6} />
               </Form.Item>
             </Col>
             <Col
