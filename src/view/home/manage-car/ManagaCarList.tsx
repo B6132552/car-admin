@@ -96,7 +96,7 @@ const ManageCarList = () => {
       key: "status",
       width: "260px",
       render: (_row,item: any) => {
-        return `${item.status === 'PENDING' ? 'รอดำเนินการ' : '-'}`
+        return `${item.status === 'PENDING' ? 'รอดำเนินการ' : item.status === 'WAITAPPROVE' ?  'รอยืนยันสลิป' : "สำเร็จ"}`
       }
     },
     {

@@ -1,7 +1,8 @@
-import { Button, Col, Form, Input, Row, Select } from "antd";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Button, Col, Form, Input, Row, Select, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Image } from "antd";
 import dayjs from "dayjs";
@@ -14,28 +15,58 @@ const ManageCar = () => {
   const initailValue: any = location?.state;
   const token = localStorage.getItem("accessToken") as string;
   const onSave = () => {};
+  const [data, setData] = useState("");
 
   useEffect(() => {
     if (initailValue?.id) {
-      axios
-        .get(`http://localhost:3001/api/book/${initailValue?.id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then(function (response) {
-          if (response.status === 200) {
-            form.setFieldsValue({
-              ...response.data,
-              price: response.data.slip[0].price,
-              status: response.data.status,
-              car: `${response.data.car.name} ${response.data.car.model} ${response.data.car.year}`,
-              date: `${dayjs(response.data.startDate).format('YYYY-MM-DD')} - ${dayjs(response.data.endDate).format('YYYY-MM-DD')}`,
-            });
-          }
-        });
+      getData(initailValue.id);
     }
   }, [form, initailValue, initailValue?.id, token]);
+
+  const getData = async (id: string) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/book/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        form.setFieldsValue({
+          ...response.data,
+          price: response.data.slip[0].price,
+          status: response.data.status,
+          car: `${response.data.car.name} ${response.data.car.model} ${response.data.car.year}`,
+          date: `${dayjs(response.data.startDate).format(
+            "YYYY-MM-DD"
+          )} - ${dayjs(response.data.endDate).format("YYYY-MM-DD")}`,
+        });
+        setData(response.data?.slip[0]?.slipUrl);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onConfirmCar = async () => {
+    await axios
+      .patch(`http://localhost:3001/api/book/${initailValue.id}/success`,{}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(function (response) {
+        if (response.status === 200) {
+          message.success("ทำรายสำเร็จ");
+          navigate(-1);
+        } else {
+          console.log("ทำรายการไม่สำเร็จ โปรดลองใหม่อีกครั้ง");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  console.log("data ==> ", data);
 
   return (
     <div>
@@ -49,7 +80,7 @@ const ManageCar = () => {
           >
             จัดการการจองรถ
           </Col>
-          <div className="flex gap-2 w-[300px]">
+          <div className="flex gap-2 w-[400px]">
             <Button
               size="large"
               style={{
@@ -66,7 +97,22 @@ const ManageCar = () => {
             >
               กลับ
             </Button>
-            
+
+            <Button
+              onClick={onConfirmCar}
+              size="large"
+              disabled={data === "" ? true : false}
+              style={{
+                width: "100%",
+                backgroundColor: "#32CD32",
+                border: "none",
+                color: "white",
+                borderRadius: 10,
+              }}
+            >
+              ยืนยันการจองรถ
+            </Button>
+
             <Button
               htmlType="submit"
               size="large"
@@ -170,11 +216,12 @@ const ManageCar = () => {
                   placeholder="สถานะ"
                   className="input-full"
                   options={[
-                    { value: 'UNSUCCESS', label: "ไม่สำเร็จ" },
-                    { value: 'PENDING', label: "รอดำเนินการ" },
-                    { value: 'PAYMENT', label: "จองสำเร็จ" },
-                    { value: 'USE', label: "กำลังใช้งาน" },
-                    { value: 'SUCCESS', label: "คืนรถสำเร็จ" },
+                    { value: "UNSUCCESS", label: "ไม่สำเร็จ" },
+                    { value: "PENDING", label: "รอดำเนินการ" },
+                    { value: "PAYMENT", label: "จองสำเร็จ" },
+                    { value: "WAITAPPROVE", label: "รอยืนยันสลิป" },
+                    { value: "USE", label: "กำลังใช้งาน" },
+                    { value: "SUCCESS", label: "คืนรถสำเร็จ" },
                   ]}
                 />
               </Form.Item>
@@ -196,13 +243,13 @@ const ManageCar = () => {
               md={12}
             >
               <Form.Item name="slip" label="สลิปโอนเงิน">
-               <div className="rounded-2xl border-2 border-solid w-[350px] h-[350px]">
-               <img
-                  className="rounded-2xl"
-                  alt="img"
-                  src={require('../../../assets/icon/slip.jpg')}
-                />
-               </div>
+                <div className="rounded-2xl border-2 border-solid w-[350px] h-[350px]">
+                  <img
+                    className="rounded-2xl w-full "
+                    alt="img"
+                    src={`http://localhost:3001/${data}`}
+                  />
+                </div>
               </Form.Item>
             </Col>
           </Row>
